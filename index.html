@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>SUDOKU</title>
+    <meta charset="UTF-8">
+  </head>
+  <style>
+    body {
+        background-color: black;
+        color: white;
+    }
+    table {
+        margin: 0 auto;
+        border: 2px solid black;
+    }
+    input[type="text"], td {
+        width: 50px;
+        height: 50px;
+        font-size: 25px;
+        text-align: center;
+        border: 2px solid rgba(0, 0, 255, 0.5);
+    }
+  </style>
+  <body>
+
+    <h1>Sudoku</h1>
+    <button onclick="generate_sudoku();">Generer Sudoku</button>
+    <button onclick="load_sudoku();">Last inn sudoku</button>
+    <button onclick="solve_sudoku();">Løs Sudoku</button>
+    <button onclick="clear_gui();">Tøm brett</button>
+    
+    <!--
+    <table id="gui">
+      <tr>
+        <td id="r0c0"><input type="text" maxlength="1"></td>
+        <td id="r0c1"><input type="text" maxlength="1"></td>
+        <td id="r0c2"><input type="text" maxlength="1"></td>
+        <td id="r0c3"><input type="text" maxlength="1"></td>
+        <td id="r0c4"><input type="text" maxlength="1"></td>
+        <td id="r0c5"><input type="text" maxlength="1"></td>
+        <td id="r0c6"><input type="text" maxlength="1"></td>
+        <td id="r0c7"><input type="text" maxlength="1"></td>
+        <td id="r0c8"><input type="text" maxlength="1"></td>
+      </tr>
+    
+    </table>
+    -->
+    <script src="sudoku.js"></script>
+  </body>
+</html>
