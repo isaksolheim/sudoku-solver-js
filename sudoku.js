@@ -11,7 +11,7 @@ function import_puzzle () {
 					[0,4,0,0,5,0,0,3,6],
 					[7,0,3,0,1,8,0,0,0]];
 
-	return sudoku2;
+	return sudoku1;
 }
 
 function sudoku_GUI() {
@@ -103,8 +103,7 @@ function solve_sudoku(random_row) {
 			if (m) { i++; }
             else { i--; }
 		}
-		if (i == 16) { break; } // stopper loop når alle celler er gått gjennom
-        console.log(i);
+		if (i == 81) { break; } // stopper loop når alle celler er gått gjennom
 	}
 }
 
