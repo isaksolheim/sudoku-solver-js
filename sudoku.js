@@ -90,7 +90,7 @@ function solve_sudoku(random_row) {
 				m = 1;  // retning: fremover
 			} else {
 				if (n == 8) {
-					//cells[i].value = 0; // vet ikke
+					cells[i].value = 0; // fjerner verdi
 					i--;    // forrige celle
 					m = 0;  // retning: bakover
 					if (cells[i].value == 9) { i--; }
