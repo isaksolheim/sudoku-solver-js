@@ -1,2 +1,2 @@
 # sudoku-solver-js
-This is a sudoku-solver and sudoku generater written 100% in javascript. The commenting is in norwegian, might translate it later... 
+This is a sudoku-solver and sudoku generater written 100% in javascript. 

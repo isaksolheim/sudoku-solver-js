@@ -15,33 +15,49 @@ function import_puzzle () {
 }
 
 function sudoku_GUI() {
-    var table = document.getElementById("gui"); // tabell
+    var table = document.getElementById("gui"); // table from html
 
-    // lager alle cellene, gir rad, kolonne og firkant attributter
+    // creates all the cells, assigns row, column and square
     for (var c = 0; c < 9; c++) {
-        var row = document.createElement("tr"); // en rad
+        var row = document.createElement("tr"); // row element 
 
         for (var r = 0; r < 9; r++) {
-            var input = document.createElement("input"); // input til celle
-            input.type = "text";
-            input.maxLength = 1;
+            var input = document.createElement("input"); // cell input field 
+            // sets all of the cell atributes
+            input.type = "text"; 
+            input.maxLength = 1; 
             input.row = r;
             input.column = c;
             input.square = square_number(r, c);
-          
-            // lager og plasserer input inn i celle-element 
+            input.onkeypress = validate; // validates that a number is entered
+
+            // creates and places input field in cell-element
             var cell = document.createElement("td");
-            cell.appendChild(input); // plasserer input-felt inn i cellen 
+            cell.appendChild(input); 
             
-            row.appendChild(cell); // putter cellen inn i rader
-            cells.push(input); // putter cellen inn i celler-arrayet
+            row.appendChild(cell); // puts cell into row 
+            cells.push(input); // puts cell into array with all cells
         }
-        document.getElementsByTagName('body')[0].appendChild(row); // plaserer raden inn i tabell
+        table.appendChild(row); // places row into the table
     }
 }
 
-// funksjon som returnerer square nummer
+function validate(evt) {
+    // this stops all non-numeric input
+    evt = (evt) ? evt : window.event;
+    var key = evt.keyCode || evt.which;
+    key = String.fromCharCode(key);
+
+    var regex = /[0-9]|\./;
+    if ( !regex.test(key) ) {
+        evt.returnValue = false;
+        if (evt.preventDefault) { evt.preventDefault(); }
+    }
+}
+
 function square_number(row, column) {
+    /* this function returns square number of cell with 
+       position x, y   */
     if (row < 3 && column < 3) { return 0; }
     if (row > 2 && row < 6 && column < 3) { return 1; }
     if (row > 5 && column < 3) { return 2; }
@@ -53,9 +69,9 @@ function square_number(row, column) {
     if (row > 5 && column > 5) { return 8; }
 }
 
-// funksjon som sjekker om verdi til celle er gyldig
 function valid_check(cell, value) { 
-    // går gjennom alle cellene i arrayet og bruker sudoku-regler for sjekk
+    /* this function checks if value is valid. it follow the standard
+       sudoku rules in this check */
     for (var i = 0; i < cells.length; i++) {
         if (cells[i].row == cell.row && cells[i].value == value) {
             return false;
@@ -71,53 +87,59 @@ function valid_check(cell, value) {
 function solve_sudoku(random_row) {
 	var numbers = [1,2,3,4,5,6,7,8,9];
 	var i = 0; // cell index
-	var n = 0; // nummer-array index
-	var m = 1; // brukes for å vite om man skal fram eller bak
+	var n = 0; // numbers-array index
+	var m = 1; // direction of backtracking (1 = forward) 
 
-	var nums = [1,2,3,4,5,6,7,8,9]; // g=1
+	var nums = [1,2,3,4,5,6,7,8,9]; // used if generating sudoku (g=1) 
 
 	while (true) {
-		if (i < 9 && random_row) { // gjør første rad tilfeldig dersom g == 1
+		if (i < 9 && random_row) { // creates a random first row if generating
 			var random_value = nums[Math.floor(Math.random()*nums.length)];
-			nums.splice(nums.indexOf(random_value),1); // fjerner verdi fra mulige
-			cells[i].value = random_value; // angir verdi
-			i++; // går videre til neste cell
-		} else if (cells[i].a == 1) {
+			nums.splice(nums.indexOf(random_value),1); // removes used value
+			cells[i].value = random_value; // assigns value
+			i++; // heads to next cell
+		} else if (cells[i].a == 1) { // tries solving cell
 			if (valid_check(cells[i], numbers[n])) {
-				cells[i].value = numbers[n];
-				i++;    // neste celle
-				n = 0;  // nullstiller number-array index
-				m = 1;  // retning: fremover
+                // this is run if valid number is found
+				cells[i].value = numbers[n]; // assigns value
+				i++;    // next cell 
+				n = 0;  // resets numbers array index
+				m = 1;  // directon = forwards
 			} else {
 				if (n == 8) {
-					cells[i].value = 0; // fjerner verdi
-					i--;    // forrige celle
-					m = 0;  // retning: bakover
+                    // this is run if we are at the end of numbers array (no more possible values)
+					cells[i].value = 0; // removes value
+					i--;    // steps to previous cell
+					m = 0;  // direction: backwards
 					if (cells[i].value == 9) { i--; }
 					n = cells[i].value;
 				} else {
-					n++; // test neste verdi av tall
+                    // this is run if we have not found valid value and we are not at the end of possible values
+					n++; // goes to next number in numbers array
 				}
 			}
-		} else { // beveger fram/bak med hensyn på m
+		} else {
+            // this is run if we hit a cell with static value,
+            // moves backwards/forwards based on m variable
 			if (m) { i++; }
             else { i--; }
 		}
-		if (i == 81) { break; } // stopper loop når alle celler er gått gjennom
+		if (i == 81) { break; } // stops the loop when we are done with last cell
 	}
 }
 
-// generer sudoku, setter alle celler.a = 1 slik at alle blir laget
 function generate_sudoku() {
-	for (cell of cells) { cell.a = 1; }
+    /* this function is used in the generation of the sudoku */
 
-	solve_sudoku(true); // sudokuen blir laget med tilfeldig første rad
+	for (cell of cells) { cell.a = 1; } // makes all cells-editable
 
-	for (cell of cells) { // gjør tilfeldige celler blank
-		if (Math.floor((Math.random() * 5)) == 0) { cell.value = ""; } 
+	solve_sudoku(true); // the sudoku is solved with a random first row -> sudoku is created
+
+	for (cell of cells) { // turns random cells blank
+		if (Math.floor((Math.random() * 3)) == 0) { cell.value = ""; } 
 	}
 	
-	for (cell of cells) { // låser celler med verdi
+	for (cell of cells) { // locks all cells with values
 		if (cell.value > 0) { cell.a = 0; }
 	}
 }
@@ -130,7 +152,7 @@ function load_sudoku() {
 			if (sudoku[c][r] != 0) {
 				cells[i].value = sudoku[c][r];
 			} else {
-				cells[i].a = 1; // låser opp celler uten verdi
+				cells[i].a = 1; // unlocks cells without values
 			}
 			i++;
 		}
@@ -139,8 +161,8 @@ function load_sudoku() {
 
 function clear_gui() {
 	for (cell of cells) {
-		cell.value = "";    // fjerner verdi
-		cell.a = 0;         // låser alle celler (default) 
+		cell.value = "";    // removes value
+		cell.a = 0;         // locks all cells (default) 
 	}
 }
 

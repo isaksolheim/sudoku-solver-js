@@ -3,48 +3,93 @@
   <head>
     <title>SUDOKU</title>
     <meta charset="UTF-8">
-  </head>
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
+</head>
   <style>
     body {
-        background-color: black;
-        color: white;
+        background-color: white;
+        color: black;
+        font-family: 'Open Sans', sans-serif;
     }
+
+    .container {
+        display: flex;
+    }
+
+    .buttons button{
+        margin-top: 10px;
+        height: 30px;
+        width: 170px;
+    }
+    
+    .sudoku-container {
+        margin-left: 10px;
+    }
+
+    .info-box {
+        margin-left: 30px;
+        width: 550px;
+    }
+
     table {
         margin: 0 auto;
-        border: 2px solid black;
+        border: 1px solid black;
+        border-collapse: collapse;
+        margin: 1em auto;
     }
+
     input[type="text"], td {
-        width: 50px;
-        height: 50px;
+        height: 35px;
+        width: 35px;
         font-size: 25px;
+        border: 1px solid;
         text-align: center;
-        border: 2px solid rgba(0, 0, 255, 0.5);
     }
+
+    td:first-child {
+        border-left: solid;
+    }
+
+    tr:first-child {
+        border-top: solid;
+    }
+
+    td:nth-child(3n) {
+        border-right: solid;
+    }
+
+    tr:nth-child(3n) td {
+        border-bottom: solid;
+    }
+
   </style>
   <body>
+    <h1>Sudoku Solver</h1>
 
-    <h1>Sudoku</h1>
-    <button onclick="generate_sudoku();">Generer Sudoku</button>
-    <button onclick="load_sudoku();">Last inn sudoku</button>
-    <button onclick="solve_sudoku();">Løs Sudoku</button>
-    <button onclick="clear_gui();">Tøm brett</button>
-    
-    <!--
-    <table id="gui">
-      <tr>
-        <td id="r0c0"><input type="text" maxlength="1"></td>
-        <td id="r0c1"><input type="text" maxlength="1"></td>
-        <td id="r0c2"><input type="text" maxlength="1"></td>
-        <td id="r0c3"><input type="text" maxlength="1"></td>
-        <td id="r0c4"><input type="text" maxlength="1"></td>
-        <td id="r0c5"><input type="text" maxlength="1"></td>
-        <td id="r0c6"><input type="text" maxlength="1"></td>
-        <td id="r0c7"><input type="text" maxlength="1"></td>
-        <td id="r0c8"><input type="text" maxlength="1"></td>
-      </tr>
-    
-    </table>
-    -->
+    <div class="container">
+      <div class="buttons">
+        <button onclick="generate_sudoku();">Generate Sudoku</button><br>
+        <!--<button onclick="load_sudoku();">Load Sudoku</button><br>-->
+        <button onclick="solve_sudoku();">Solve Sudoku</button><br>
+        <button onclick="clear_gui();">Clear Board</button>
+      </div>
+        
+      <div class="sudoku-container">
+        <table id="gui">
+        </table>
+      </div>
+
+      <div class="info-box">
+        <p>This sudoku solver is created using pure javascript. The GUI is also created using javascript, 
+        and it is styled using CSS.<br>
+        It uses a <a href="https://en.wikipedia.org/wiki/Sudoku_solving_algorithms" target="blank">
+        backtracking algorithm</a>.
+        You can view the code <a href="https://github.com/wickdeeb/sudoku-solver-js/" target="blank">
+        here</a>.</p>
+      </div>
+    </div>
+
     <script src="sudoku.js"></script>
+
   </body>
 </html>
