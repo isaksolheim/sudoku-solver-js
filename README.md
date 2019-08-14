@@ -1,2 +1,11 @@
-# sudoku-solver-js
-This is a sudoku-solver and sudoku generater written 100% in javascript. 
+## sudoku-solver-js
+A sudoku solver written in javascript. 
+
+## Project Status
+Completed
+
+## Built with
+* [Javascript](https://reactjs.org/)
+
+## License
+[MIT](https://choosealicense.com/licenses/mit/)
